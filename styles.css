@@ -1,0 +1,100 @@
+/* Параметры для браузеров, которые не поддерживают Grid */
+* {
+  box-sizing: border-box;
+}
+
+.support-warning {
+  background: #ccb11c;
+  color: #000;
+  display: block;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 700;
+  opacity: 0.95;
+  padding: 3rem;
+  position: fixed;
+  text-align: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 5;
+}
+
+.support-warning a {
+  color: inherit;
+}
+
+/* Обертка для грида */
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Размеры грида */
+.grid--4x4 > .grid__item {
+  flex: 1 0 auto;
+}
+
+/* Поддержка Grid */
+@supports (display: grid) {
+  .support-warning {
+    display: none;
+  }
+
+  .grid {
+    display: grid;
+  }
+}
+
+/* Соотношение долей */
+.grid--4x4 {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(2, minmax(50vh, auto));
+}
+
+/* Параметры выравнивания для контента */
+.align-center {
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  padding: 3.5rem;
+  max-width: 400px;
+}
+
+/* Блок заголовка */
+.heading {
+  font-family: 'Roboto Slab', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+/* Блок описания */
+.description {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Цветовые темы */
+.theme-gray {
+  background: #808080;
+  color: #ffffff;
+}
+
+.theme-blue {
+  background: #0074d9;
+  color: #ffffff;
+}
+
+.theme-green {
+  background: #2e7d32;
+  color: #ffffff;
+}
+
+.theme-red {
+  background: #d32f2f;
+  color: #ffffff;
+}
