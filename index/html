@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Михалков — WebGL</title>
+  <style>
+    /* Сброс */
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Шрифт из задания */
+    @import url("https://fonts.googleapis.com/css?family=Homenaje");
+
+    /* Часть I: Стили из задания */
+    .p-canvas-webgl {
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .p-summary {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      color: #fff;
+      font-family: 'Homenaje', sans-serif;
+      text-align: center;
+    }
+
+    .p-summary h1 {
+      margin: 0 0 0.1em;
+      font-size: 18vh;
+      font-weight: 400;
+    }
+
+    .p-summary p {
+      margin: 0;
+      font-size: 3vh;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* Адаптивность */
+    @media (max-width: 768px) {
+      .p-summary h1 { font-size: 20vw; }
+      .p-summary p { font-size: 4vw; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Часть III: HTML-структура -->
+  <div class="p-summary">
+    <div class="p-summary__wrap">
+      <h1>Михалков</h1>
+      <p>Фильмы Никиты Михалкова — о России, чести и памяти.</p>
+    </div>
+  </div>
+
+  <!-- Canvas с требуемым классом -->
+  <canvas class="p-canvas-webgl" id="canvas-webgl"></canvas>
+
+  <!-- Three.js -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.86.0/build/three.min.js"></script>
+
+  <!-- WebGL-скрипт -->
+  <script>
+    (function () {
+      const canvas = document.getElementById('canvas-webgl');
+      if (!canvas) return;
+
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x000000);
+
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 5;
+
+      // Освещение
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+      scene.add(ambientLight);
+      const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+      dirLight.position.set(5, 5, 5);
+      scene.add(dirLight);
+
+      // Вращающийся шар
+      const geometry = new THREE.SphereGeometry(2, 64, 64);
+      const material = new THREE.MeshStandardMaterial({
+        color: 0x552211,
+        roughness: 0.3,
+        metalness: 0.7
+      });
+      const mesh = new THREE.Mesh(geometry, material);
+      scene.add(mesh);
+
+      // Анимация
+      function animate() {
+        requestAnimationFrame(animate);
+        mesh.rotation.x += 0.005;
+        mesh.rotation.y += 0.01;
+        renderer.render(scene, camera);
+      }
+
+      // Адаптивность
+      window.addEventListener('resize', () => {
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+      }, { passive: true });
+
+      animate();
+    })();
+  </script>
+</body>
+</html>
